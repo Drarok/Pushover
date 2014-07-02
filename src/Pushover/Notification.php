@@ -171,6 +171,10 @@ class Notification
      */
     protected function setPriority($priority)
     {
+        $priority = intval($priority);
+        if ($priority < -2 || $priority > 2 || $priority == 0) {
+            throw new \InvalidArgumentException('Invalid priority: ' . $priority);
+        }
         $this->priority = $priority;
         return $this;
     }
