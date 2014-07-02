@@ -4,6 +4,12 @@ Pushover makes it easy to get real-time notifications on your Android device, iP
 
 This simple PHP library allows you to utilise Pushover from your PHP code.
 
+## Features
+
+* Supports full API feature set (including notification priority).
+* Requires only curl extension.
+* PSR-2 standard adherence.
+
 ## Requirements
 
 * PHP ~5.3
