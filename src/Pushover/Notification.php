@@ -5,6 +5,34 @@ namespace Zerifas\Pushover;
 class Notification
 {
     /**
+     * Silent priority.
+     *
+     * @const int
+     */
+    const PRIORITY_SILENT = -2;
+
+    /**
+     * Quiet priority.
+     *
+     * @const int
+     */
+    const PRIORITY_QUIET = -1;
+
+    /**
+     * High priority.
+     *
+     * @const int
+     */
+    const PRIORITY_HIGH = 1;
+
+    /**
+     * Confirm priority.
+     *
+     * @const int
+     */
+    const PRIORITY_CONFIRM = 2;
+
+    /**
      * Message.
      *
      * @var string
