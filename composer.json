@@ -1,0 +1,17 @@
+{
+    "name": "zerifas/pushover",
+    "description": "Pushover Notifications",
+    "authors": [
+        {
+            "name": "Mat Gadd",
+            "email": "mat@zerifas.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Zerifas\\Pushover\\": "src/Pushover/"
+        }
+    },
+    "require": {
+    }
+}
