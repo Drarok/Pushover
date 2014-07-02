@@ -5,6 +5,8 @@ namespace Zerifas\Pushover;
 class Connection
 {
     /**
+
+    /**
      * Application token.
      *
      * @var string
@@ -12,17 +14,43 @@ class Connection
     protected $applicationToken;
 
     /**
+     * Default user token to use if none passed.
+     *
+     * @var string
+     */
+    protected $defaultUserToken;
      * Constructor.
      *
      * @param string $applicationToken Application token.
+     * @param string $defaultUserToken Default user token.
      */
     public function __construct($applicationToken)
+    public function __construct($applicationToken, $defaultUserToken = null)
     {
         $this->applicationToken = $applicationToken;
+        $this->defaultUserToken = $defaultUserToken;
     }
 
     public function notifyUser(Notification $notification, $userToken, $deviceToken = null)
     {
+    /**
+     * Send a notification to a user or user's device.
+     *
+     * @param Notification $notification Notification object.
+     * @param string       $userToken    Optional user token (must be specified if there's no defaultUserToken set).
+     * @param string       $deviceToken  Optional device token.
+     *
+     * @return bool
+     */
+    public function notifyUser(Notification $notification, $userToken = null, $deviceToken = null)
+    {
+        if ($userToken === null) {
+            if ($this->defaultUserToken === null) {
+                throw new \InvalidArgumentException('You must set a default user token or pass one to notifyUser.');
+            }
+
+            $userToken = $this->defaultUserToken;
+        }
         $ch = curl_init();
 
         curl_setopt_array(
