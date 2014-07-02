@@ -16,7 +16,7 @@ At its simplest, you create a connection, and pass Notification objects and the 
 ```php
 $pushover = new Zerifas\Pushover\Connection($applicationToken);
 $notification = new Zerifas\Pushover\Notification('Hello, world!');
-$pushover->notifyUser($notification, $userToken);
+$success = $pushover->notifyUser($notification, $userToken);
 ```
 
 You may also want to omit the user token passed to notifyUser if you're only delivering to one user:
@@ -24,7 +24,7 @@ You may also want to omit the user token passed to notifyUser if you're only del
 ```php
 $pushover = new Zerifas\Pushover\Connection($applicationToken, $userToken);
 $notification = new Zerifas\Pushover\Notification('Hello, world!');
-$pushover->notifyUser($notification);
+$success = $pushover->notifyUser($notification);
 ```
 
 The `Notification` class supports all the options defined in the [API][api], and a fluent interface.
@@ -40,7 +40,19 @@ $notification->setTitle('Title')
     ->setTimestamp(time())
     ->setSound('cosmic')
 ;
-$pushover->notifyUser($notification);
+$success = $pushover->notifyUser($notification);
+```
+
+You can also get the status code and response as an array if required:
+
+```php
+$pushover = new Zerifas\Pushover\Connection($applicationToken, $userToken);
+$notification = new Zerifas\Pushover\Notification('Hello, world!');
+$success = $pushover->notifyUser($notification);
+$statusCode = $pushover->getLastStatusCode();
+$response = $pushover->getLastResponse();
+$requestId = $response['request'];
+$errors = $response['errors'];
 ```
 
 [api]: https://pushover.net/api
