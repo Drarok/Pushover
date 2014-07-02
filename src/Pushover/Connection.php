@@ -140,11 +140,11 @@ class Connection
 
         curl_setopt_array(
             $ch,
-            [
+            array(
                 CURLOPT_URL            => static::API_URL,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_POSTFIELDS     => $this->getAPIData($notification, $userToken, $deviceToken),
-            ]
+            )
         );
 
         $data = curl_exec($ch);
@@ -158,13 +158,22 @@ class Connection
         ;
     }
 
+    /**
+     * Get an array of data for sending to the API.
+     *
+     * @param Notification $notification Notification object.
+     * @param string       $userToken    User token.
+     * @param string|null  $deviceToken  Device token.
+     *
+     * @return array
+     */
     protected function getAPIData(Notification $notification, $userToken, $deviceToken)
     {
-        $data = [
+        $data = array(
             'token'   => $this->applicationToken,
             'user'    => $userToken,
             'message' => $notification->getMessage(),
-        ];
+        );
 
         if ($deviceToken) {
             $data['device'] = $deviceToken;
