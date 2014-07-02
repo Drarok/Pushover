@@ -24,20 +24,99 @@ class Connection
      * @var string
      */
     protected $defaultUserToken;
+
+    /**
+     * Last status code.
+     *
+     * @var int
+     */
+    protected $lastStatusCode;
+
+    /**
+     * Last response.
+     *
+     * @var array
+     */
+    protected $lastResponse;
+
+    /**
      * Constructor.
      *
      * @param string $applicationToken Application token.
      * @param string $defaultUserToken Default user token.
      */
-    public function __construct($applicationToken)
     public function __construct($applicationToken, $defaultUserToken = null)
     {
         $this->applicationToken = $applicationToken;
         $this->defaultUserToken = $defaultUserToken;
     }
 
-    public function notifyUser(Notification $notification, $userToken, $deviceToken = null)
+    /**
+     * Sets the application token.
+     *
+     * @param string $applicationToken Application token.
+     *
+     * @return $this
+     */
+    protected function setApplicationToken($applicationToken)
     {
+        $this->applicationToken = $applicationToken;
+        return $this;
+    }
+
+    /**
+     * Gets the application token.
+     *
+     * @return string
+     */
+    public function getApplicationToken()
+    {
+        return $this->applicationToken;
+    }
+
+    /**
+     * Sets the default user token.
+     *
+     * @param string $defaultUserToken Default user token.
+     *
+     * @return $this
+     */
+    protected function setDefaultUserToken($defaultUserToken)
+    {
+        $this->defaultUserToken = $defaultUserToken;
+        return $this;
+    }
+
+    /**
+     * Gets the default user token.
+     *
+     * @return string
+     */
+    public function getDefaultUserToken()
+    {
+        return $this->defaultUserToken;
+    }
+
+    /**
+     * Gets the last status code.
+     *
+     * @return int
+     */
+    public function getLastStatusCode()
+    {
+        return $this->lastStatusCode;
+    }
+
+    /**
+     * Gets the last response.
+     *
+     * @return array
+     */
+    public function getLastResponse()
+    {
+        return $this->lastResponse;
+    }
+
     /**
      * Send a notification to a user or user's device.
      *
@@ -56,6 +135,7 @@ class Connection
 
             $userToken = $this->defaultUserToken;
         }
+
         $ch = curl_init();
 
         curl_setopt_array(
@@ -68,8 +148,14 @@ class Connection
         );
 
         $data = curl_exec($ch);
-        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $this->lastStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $this->lastResponse = json_decode($data, true);
         curl_close($ch);
+
+        return $this->lastStatusCode == 200
+            && array_key_exists('status', $this->lastResponse)
+            && $this->lastResponse['status'] == 1
+        ;
     }
 
     protected function getAPIData(Notification $notification, $userToken, $deviceToken)
