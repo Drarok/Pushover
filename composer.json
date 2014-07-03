@@ -1,6 +1,8 @@
 {
     "name": "zerifas/pushover",
     "description": "Pushover Notifications",
+    "license": "MIT",
+    "homepage": "http://github.com/drarok/Pushover",
     "authors": [
         {
             "name": "Mat Gadd",
